@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"strconv"
-	"text/template"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
