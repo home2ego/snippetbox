@@ -2,14 +2,8 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
-)
-
-const (
-	green = "\033[32m"
-	reset = "\033[0m"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -33,17 +27,6 @@ func snippetCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func snippetCeatePost(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte("Save a new snippet..."))
-}
-
-func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("GET /{$}", home)
-	mux.HandleFunc("GET /snippet/view/{id}", snippetView)
-	mux.HandleFunc("GET /snippet/create", snippetCreate)
-	mux.HandleFunc("POST /snippet/create", snippetCeatePost)
-
-	log.Printf("%sServer starting on http://localhost:4000%s", green, reset)
-	err := http.ListenAndServe(":4000", mux)
-	log.Fatal(err)
 }
