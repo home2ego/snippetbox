@@ -9,14 +9,19 @@ import (
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("./ui/html/pages/home.tmpl")
+	// exposes server details (bad for security), used here for my personal project
+	w.Header().Set("Server", "Go")
+
+	files := []string{"./ui/html/base.tmpl", "./ui/html/pages/home.tmpl"}
+
+	t, err := template.ParseFiles(files...)
 	if err != nil {
 		log.Print(err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
-	err = t.Execute(w, nil)
+	err = t.ExecuteTemplate(w, "base", nil)
 	if err != nil {
 		log.Print(err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)

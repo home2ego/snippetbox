@@ -1,0 +1,23 @@
+{{define "base"}}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>{{template "title" .}} | Snippetbox</title>
+    <style>
+      html {
+        font-family: system-ui, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1><a href="/">Snippetbox</a></h1>
+    </header>
+    <main>{{template "main" .}}</main>
+    <footer>Designed & Built by Artem Zhyrnyi</footer>
+  </body>
+</html>
+{{end}}
