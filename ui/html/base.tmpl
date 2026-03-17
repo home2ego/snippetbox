@@ -5,19 +5,28 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark light" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="icon" type="image/svg+xml" href="/static/img/logo.svg" />
     <title>{{template "title" .}} | Snippetbox</title>
-    <style>
-      html {
-        font-family: system-ui, sans-serif;
-      }
-    </style>
   </head>
+
   <body>
-    <header>
-      <h1><a href="/">Snippetbox</a></h1>
+    <header class="header">
+      <h1>
+        <a href="/" aria-label="Snippetbox" class="header__logo">
+          <img src="/static/img/logo.svg" alt="" width="36" height="36" />
+          <span aria-hidden="true">Snippetbox</span>
+        </a>
+      </h1>
+
+      <nav><a href="/" class="header__nav-item">Home</a></nav>
     </header>
+
     <main>{{template "main" .}}</main>
+
     <footer>Designed & Built by Artem Zhyrnyi</footer>
+
+    <script src="/static/js/main.js"></script>
   </body>
 </html>
 {{end}}
