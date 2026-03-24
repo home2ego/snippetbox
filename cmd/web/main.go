@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -38,6 +39,9 @@ func (nfs neuteredFileSystem) Open(path string) (http.File, error) {
 }
 
 func main() {
+	addr := flag.String("addr", ":4000", "HTTP network address")
+	flag.Parse()
+
 	mux := http.NewServeMux()
 
 	fileServer := http.FileServer(neuteredFileSystem{http.Dir("./ui/static/")})
@@ -49,8 +53,8 @@ func main() {
 	mux.HandleFunc("GET /snippet/create", snippetCreate)
 	mux.HandleFunc("POST /snippet/create", snippetCeatePost)
 
-	log.Printf("Server starting on %shttp://localhost:4000%s", "\033[32m", "\033[0m")
+	log.Printf("Server starting on %shttp://localhost%s%s", "\033[32m", *addr, "\033[0m")
 
-	err := http.ListenAndServe(":4000", mux)
+	err := http.ListenAndServe(*addr, mux)
 	log.Fatal(err)
 }
