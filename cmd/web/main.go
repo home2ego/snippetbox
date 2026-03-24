@@ -2,8 +2,9 @@ package main
 
 import (
 	"flag"
-	"log"
+	"log/slog"
 	"net/http"
+	"os"
 	"path/filepath"
 )
 
@@ -39,8 +40,12 @@ func (nfs neuteredFileSystem) Open(path string) (http.File, error) {
 }
 
 func main() {
+	// Add custom command line flag "-addr"
 	addr := flag.String("addr", ":4000", "HTTP network address")
 	flag.Parse()
+
+	// Add structured logging
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
 	mux := http.NewServeMux()
 
@@ -53,8 +58,9 @@ func main() {
 	mux.HandleFunc("GET /snippet/create", snippetCreate)
 	mux.HandleFunc("POST /snippet/create", snippetCeatePost)
 
-	log.Printf("Server starting on %shttp://localhost%s%s", "\033[32m", *addr, "\033[0m")
+	logger.Info("starting server", "addr", *addr)
 
 	err := http.ListenAndServe(*addr, mux)
-	log.Fatal(err)
+	logger.Error(err.Error())
+	os.Exit(1)
 }
