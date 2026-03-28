@@ -8,6 +8,10 @@ import (
 	"path/filepath"
 )
 
+type application struct {
+	logger *slog.Logger
+}
+
 type neuteredFileSystem struct {
 	fs http.FileSystem
 }
@@ -47,16 +51,20 @@ func main() {
 	// Add structured logging
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
+	app := &application{
+		logger: logger,
+	}
+
 	mux := http.NewServeMux()
 
 	fileServer := http.FileServer(neuteredFileSystem{http.Dir("./ui/static/")})
 	mux.Handle("GET /static", http.NotFoundHandler())
 	mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
 
-	mux.HandleFunc("GET /{$}", home)
-	mux.HandleFunc("GET /snippet/view/{id}", snippetView)
-	mux.HandleFunc("GET /snippet/create", snippetCreate)
-	mux.HandleFunc("POST /snippet/create", snippetCeatePost)
+	mux.HandleFunc("GET /{$}", app.home)
+	mux.HandleFunc("GET /snippet/view/{id}", app.snippetView)
+	mux.HandleFunc("GET /snippet/create", app.snippetCreate)
+	mux.HandleFunc("POST /snippet/create", app.snippetCeatePost)
 
 	logger.Info("starting server", "addr", *addr)
 
